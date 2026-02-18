@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Option Pricing Analysis - Binomial Trees</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .slide { display: none; min-height: 80vh; }
+        .slide.active { display: flex; flex-direction: column; }
+        .progress-bar { transition: width 0.3s ease; }
+        pre { font-size: 0.8rem; background: #1a202c; color: #e2e8f0; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans antialiased">
+
+    <div class="fixed top-0 left-0 w-full h-1 bg-slate-800 z-50">
+        <div id="progress" class="progress-bar h-full bg-blue-500 w-0"></div>
+    </div>
+
+    <main class="container mx-auto px-4 py-12 max-w-5xl">
+        
+        <section class="slide active items-center justify-center text-center">
+            <h2 class="text-blue-400 font-bold tracking-widest uppercase mb-4 text-sm">Numerical Computing Project</h2>
+            <h1 class="text-5xl md:text-6xl font-extrabold mb-6 leading-tight">Option Pricing Using <span class="text-blue-500">Binomial Trees</span></h1>
+            <p class="text-xl text-slate-400 mb-8">An Analysis of Apple Inc. (AAPL) European Call Options [cite: 4]</p>
+            <div class="bg-slate-800/50 p-6 rounded-xl border border-slate-700">
+                <p class="font-semibold text-lg">Group 04 | BS Computer Sciences VII A</p>
+                <p class="text-slate-400">University of Central Punjab [cite: 173]</p>
+            </div>
+        </section>
+
+        <section class="slide justify-center">
+            <h2 class="text-3xl font-bold mb-8 border-l-4 border-blue-500 pl-4 text-white">Overview & Objectives</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="space-y-4">
+                    <h3 class="text-xl font-semibold text-blue-400">The Problem</h3>
+                    <p class="text-slate-300">Evaluating derivatives using risk-neutral pricing and backward induction in a multi-period framework[cite: 3].</p>
+                    <ul class="list-disc list-inside text-slate-400 space-y-2">
+                        <li>Validate results against Black-Scholes formula[cite: 21].</li>
+                        <li>Analyze convergence properties[cite: 22].</li>
+                        <li>Calculate Greeks for risk management[cite: 23].</li>
+                    </ul>
+                </div>
+                <div class="bg-slate-800/30 p-6 rounded-xl border border-slate-700">
+                    <h3 class="text-xl font-semibold text-blue-400 mb-4">Input Parameters (AAPL)</h3>
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        <div class="text-slate-400">Stock Price (S₀)</div><div class="text-white font-mono">$236.50 [cite: 27]</div>
+                        <div class="text-slate-400">Strike Price (K)</div><div class="text-white font-mono">$248.33 [cite: 28]</div>
+                        <div class="text-slate-400">Volatility (σ)</div><div class="text-white font-mono">28% [cite: 31]</div>
+                        <div class="text-slate-400">Time (T)</div><div class="text-white font-mono">1.0 Year [cite: 29]</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide justify-center">
+            <h2 class="text-3xl font-bold mb-8 border-l-4 border-blue-500 pl-4 text-white">Mathematical Framework</h2>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-blue-400 font-bold mb-2 uppercase text-xs tracking-wider">Step 1: Tree Construction</h3>
+                        <p class="text-slate-300">Time is divided into $N$ equal intervals[cite: 35]. Prices move up ($u$) or down ($d$):</p>
+                        <p class="font-mono text-blue-300 mt-2">$u = e^{\sigma\sqrt{\Delta t}}$, $d = 1/u$ [cite: 37]</p>
+                    </div>
+                    <div>
+                        <h3 class="text-blue-400 font-bold mb-2 uppercase text-xs tracking-wider">Step 2: Risk-Neutral Measure</h3>
+                        <p class="text-slate-300">Probability of an up-move ($p$):</p>
+                        <p class="font-mono text-blue-300 mt-2">$p = \frac{e^{r\Delta t} - d}{u - d}$ [cite: 39]</p>
+                    </div>
+                </div>
+                <div class="bg-slate-800 rounded-xl p-4">
+                    <h3 class="text-center text-sm mb-4 text-slate-500">Asset Tree Structure (10 Steps)</h3>
+                    <img src="assettree.png" alt="Asset Tree" class="rounded shadow-2xl">
+                </div>
+            </div>
+        </section>
+
+        <section class="slide justify-center">
+            <h2 class="text-3xl font-bold mb-8 border-l-4 border-blue-500 pl-4 text-white">Pricing Accuracy</h2>
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-blue-600/20 border border-blue-500/50 p-6 rounded-xl text-center">
+                    <div class="text-sm text-blue-300 mb-1 uppercase">Binomial Price</div>
+                    <div class="text-3xl font-bold">$26.04 </div>
+                </div>
+                <div class="bg-slate-800 border border-slate-700 p-6 rounded-xl text-center">
+                    <div class="text-sm text-slate-400 mb-1 uppercase">Black-Scholes</div>
+                    <div class="text-3xl font-bold">$25.94 </div>
+                </div>
+                <div class="bg-green-600/20 border border-green-500/50 p-6 rounded-xl text-center">
+                    <div class="text-sm text-green-300 mb-1 uppercase">Relative Error</div>
+                    <div class="text-3xl font-bold">0.42% </div>
+                </div>
+            </div>
+            <p class="text-slate-400 text-center italic">"Convergence achieved in 50 steps with less than 0.5% error." [cite: 6, 83]</p>
+        </section>
+
+        <section class="slide justify-center">
+            <h2 class="text-3xl font-bold mb-8 border-l-4 border-blue-500 pl-4 text-white">The Greeks</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="text-blue-400 border-b border-slate-700">
+                            <th class="py-3 px-4">Greek</th>
+                            <th class="py-3 px-4">Value</th>
+                            <th class="py-3 px-4">Interpretation</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-slate-300">
+                        <tr class="border-b border-slate-800">
+                            <td class="py-4 px-4 font-bold">Delta (Δ)</td>
+                            <td class="py-4 px-4 font-mono">0.55 [cite: 88]</td>
+                            <td class="py-4 px-4 text-sm">Option value change per $1 stock price change[cite: 88].</td>
+                        </tr>
+                        <tr class="border-b border-slate-800">
+                            <td class="py-4 px-4 font-bold">Gamma (Γ)</td>
+                            <td class="py-4 px-4 font-mono">0.006 [cite: 90]</td>
+                            <td class="py-4 px-4 text-sm">Rate of change of Delta (Convexity)[cite: 58, 90].</td>
+                        </tr>
+                        <tr class="border-b border-slate-800">
+                            <td class="py-4 px-4 font-bold">Vega (ν)</td>
+                            <td class="py-4 px-4 font-mono">93.60 [cite: 91]</td>
+                            <td class="py-4 px-4 text-sm">Sensitivity to 1% volatility change[cite: 91].</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-4 font-bold">Theta (Θ)</td>
+                            <td class="py-4 px-4 font-mono">-17.79 [cite: 92]</td>
+                            <td class="py-4 px-4 text-sm">Daily time decay[cite: 92].</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="slide justify-center">
+            <h2 class="text-3xl font-bold mb-8 border-l-4 border-blue-500 pl-4 text-white">Visual Insights</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div class="space-y-2">
+                    <div class="h-32 bg-slate-800 rounded overflow-hidden"><img src="price surface.png" class="object-cover w-full h-full opacity-70 hover:opacity-100 transition"></div>
+                    <p class="text-xs text-center text-slate-400">Price Surface [cite: 108]</p>
+                </div>
+                <div class="space-y-2">
+                    <div class="h-32 bg-slate-800 rounded overflow-hidden"><img src="payoff distribution.png" class="object-cover w-full h-full opacity-70 hover:opacity-100 transition"></div>
+                    <p class="text-xs text-center text-slate-400">Payoff Distribution [cite: 111]</p>
+                </div>
+                <div class="space-y-2">
+                    <div class="h-32 bg-slate-800 rounded overflow-hidden"><img src="greeks sensitivity.png" class="object-cover w-full h-full opacity-70 hover:opacity-100 transition"></div>
+                    <p class="text-xs text-center text-slate-400">Greeks Sensitivity [cite: 114]</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide items-center justify-center text-center">
+            <div class="max-w-2xl">
+                <h2 class="text-4xl font-extrabold mb-6">Conclusion</h2>
+                <p class="text-slate-400 mb-8 text-lg">"The binomial tree is a crucial tool for financial engineering, offering a flexible framework for handling complex features like American options and path-dependent payoffs." [cite: 160]</p>
+                <div class="grid grid-cols-2 gap-4 text-left">
+                    <div class="p-4 bg-slate-800 rounded-lg">
+                        <span class="text-blue-500 font-bold block mb-1">Complexity</span>
+                        <span class="text-sm">O(N²) via recombining tree structure[cite: 137, 158].</span>
+                    </div>
+                    <div class="p-4 bg-slate-800 rounded-lg">
+                        <span class="text-blue-500 font-bold block mb-1">Future Scope</span>
+                        <span class="text-sm">Barrier options, volatility smiles, and trinomial trees[cite: 162, 163].</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="fixed bottom-0 left-0 w-full p-6 bg-slate-900/80 backdrop-blur-md border-t border-slate-800">
+        <div class="container mx-auto flex justify-between items-center">
+            <button id="prevBtn" class="px-6 py-2 rounded-full border border-slate-700 hover:bg-slate-800 transition disabled:opacity-30" disabled>Previous</button>
+            <span id="slideIndicator" class="text-slate-500 font-mono text-sm uppercase tracking-widest">Slide 1 / 7</span>
+            <button id="nextBtn" class="px-6 py-2 bg-blue-600 rounded-full hover:bg-blue-500 transition shadow-lg shadow-blue-500/20">Next</button>
+        </div>
+    </footer>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progress = document.getElementById('progress');
+        const indicator = document.getElementById('slideIndicator');
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        let currentSlide = 0;
+
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === currentSlide);
+            });
+            
+            const percentage = ((currentSlide + 1) / slides.length) * 100;
+            progress.style.width = percentage + '%';
+            indicator.textContent = `Slide ${currentSlide + 1} / ${slides.length}`;
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.textContent = currentSlide === slides.length - 1 ? 'Finish' : 'Next';
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        });
+
+        // Keyboard support
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') nextBtn.click();
+            if (e.key === 'ArrowLeft') prevBtn.click();
+        });
+    </script>
+</body>
+</html>
